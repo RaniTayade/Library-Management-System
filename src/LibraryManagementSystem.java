@@ -6,6 +6,7 @@ public class LibraryManagementSystem {
         ArrayList<Book> library = new ArrayList<>();
         Scanner sc = new Scanner(System.in);
 
+        // Sample books
         library.add(new Book(1, "Java Basics", "James Gosling"));
         library.add(new Book(2, "Python Programming", "Guido van Rossum"));
         library.add(new Book(3, "C++ Fundamentals", "Bjarne Stroustrup"));
@@ -16,9 +17,11 @@ public class LibraryManagementSystem {
             System.out.println("1. View Books");
             System.out.println("2. Borrow Book");
             System.out.println("3. Return Book");
-            System.out.println("4. Exit");
+            System.out.println("4. Search Book");
+            System.out.println("5. Exit");
             System.out.print("Enter your choice: ");
             choice = sc.nextInt();
+            sc.nextLine(); // consume newline
 
             switch (choice) {
                 case 1:
@@ -63,18 +66,35 @@ public class LibraryManagementSystem {
                     break;
 
                 case 4:
+                    System.out.print("Enter keyword to search (title/author): ");
+                    String keyword = sc.nextLine().toLowerCase();
+                    boolean found = false;
+                    for (Book b : library) {
+                        if (b.getTitle().toLowerCase().contains(keyword) ||
+                                b.getAuthor().toLowerCase().contains(keyword)) {
+                            System.out.println(b);
+                            found = true;
+                        }
+                    }
+                    if (!found) {
+                        System.out.println(" No books found with that keyword.");
+                    }
+                    break;
+
+                case 5:
                     System.out.println(" Exiting...");
                     break;
 
                 default:
                     System.out.println(" Invalid choice.");
             }
-        } while (choice != 4);
+        } while (choice != 5);
 
         sc.close();
     }
 }
 
+// 👇 Book class
 class Book {
     private int id;
     private String title;
@@ -94,6 +114,10 @@ class Book {
 
     public String getTitle() {
         return title;
+    }
+
+    public String getAuthor() {
+        return author;
     }
 
     public boolean isAvailable() {
